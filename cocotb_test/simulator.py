@@ -35,19 +35,19 @@ class Simulator:
         toplevel,
         module,
         work_dir=None,
-        python_search=None,
+        python_search=[],
         toplevel_lang="verilog",
-        verilog_sources=None,
-        vhdl_sources=None,
-        includes=None,
-        defines=None,
-        parameters=None,
-        compile_args=None,
-        vhdl_compile_args=None,
-        verilog_compile_args=None,
-        sim_args=None,
-        extra_args=None,
-        plus_args=None,
+        verilog_sources=[],
+        vhdl_sources=[],
+        includes=[],
+        defines=[],
+        parameters={},
+        compile_args=[],
+        vhdl_compile_args=[],
+        verilog_compile_args=[],
+        sim_args=[],
+        extra_args=[],
+        plus_args=[],
         force_compile=False,
         testcase=None,
         sim_build="sim_build",
@@ -85,58 +85,7 @@ class Simulator:
             if os.path.isdir(absworkdir):
                 self.work_dir = absworkdir
 
-        if python_search is None:
-            python_search = []
-
-        self.python_search = python_search
-
-        self.toplevel = toplevel
-        self.toplevel_lang = toplevel_lang
-
-        if verilog_sources is None:
-            verilog_sources = []
-        self.verilog_sources = self.get_abs_paths(verilog_sources)
-
-        if vhdl_sources is None:
-            vhdl_sources = []
-        self.vhdl_sources = self.get_abs_paths(vhdl_sources)
-
-        if includes is None:
-            includes = []
-
-        self.includes = self.get_abs_paths(includes)
-
-        if defines is None:
-            defines = []
-
-        self.defines = defines
-
-        if parameters is None:
-            parameters = {}
-
-        self.parameters = parameters
-
-        if compile_args is None:
-            compile_args = []
-
-        if vhdl_compile_args is None:
-            self.vhdl_compile_args = []
-        else:
-            self.vhdl_compile_args = vhdl_compile_args
-
-        if verilog_compile_args is None:
-            self.verilog_compile_args = []
-        else:
-            self.verilog_compile_args = verilog_compile_args
-
-        if extra_args is None:
-            extra_args = []
-
-        self.compile_args = compile_args + extra_args
-
-        if sim_args is None:
-            sim_args = []
-
+        # Check for deprecated properties and apply backwards-compatibility fixes
         if simulation_args is not None:
             sim_args += simulation_args
             warnings.warn(
@@ -144,22 +93,28 @@ class Simulator:
                 DeprecationWarning,
                 stacklevel=2,
             )
-
-        self.simulation_args = sim_args + extra_args
-
-        if plus_args is None:
-            plus_args = []
-
-        self.plus_args = plus_args
-        self.force_compile = force_compile
-        self.compile_only = compile_only
-
         if kwargs:
             warnings.warn(
                 "Using kwargs is deprecated. Please explicitly declare or arguments instead.",
                 DeprecationWarning,
                 stacklevel=2,
             )
+
+        self.python_search = python_search
+        self.toplevel = toplevel
+        self.toplevel_lang = toplevel_lang
+        self.verilog_sources = verilog_sources
+        self.vhdl_sources = self.get_abs_paths(vhdl_sources)
+        self.includes = self.get_abs_paths(includes)
+        self.defines = defines
+        self.parameters = parameters
+        self.vhdl_compile_args = vhdl_compile_args
+        self.verilog_compile_args = verilog_compile_args
+        self.compile_args = compile_args + extra_args
+        self.simulation_args = sim_args + extra_args
+        self.plus_args = plus_args
+        self.force_compile = force_compile
+        self.compile_only = compile_only
 
         for arg in kwargs:
             setattr(self, arg, kwargs[arg])
