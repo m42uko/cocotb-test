@@ -9,38 +9,47 @@ jobs:
       matrix:
         Linux-Icarus-py37:
           python.version: "3.7"
+          cocotb.version: "v1.6.0"
           imageName: "ubuntu-latest"
           SIM: "icarus"
         Linux-Icarus-py38:
           python.version: "3.8"
+          cocotb.version: "v1.6.0"
           imageName: "ubuntu-latest"
           SIM: "icarus"
         Linux-Icarus-py39:
           python.version: "3.9"
+          cocotb.version: "v1.6.0"
           imageName: "ubuntu-latest"
           SIM: "icarus"
         Linux-Icarus-py310:
           python.version: "3.10"
+          cocotb.version: "v1.6.0"
           imageName: "ubuntu-latest"
           SIM: "icarus"
         Linux-GHDL-py38:
           python.version: "3.8"
+          cocotb.version: "v1.6.0"
           imageName: "ubuntu-latest"
           SIM: "ghdl"
         Linux-NVC-py38:
           python.version: "3.8"
+          cocotb.version: "master"
           imageName: "ubuntu-latest"
           SIM: "nvc"
         Windows-Icarus-py310:
           python.version: "3.10"
+          cocotb.version: "v1.6.0"
           imageName: "windows-latest"
           SIM: "icarus"
         Mac-Icarus-py38:
           imageName: "macOS-latest"
           python.version: "3.8"
+          cocotb.version: "v1.6.0"
           SIM: "icarus"
         Linux-Verilator-py38:
           python.version: "3.8"
+          cocotb.version: "v1.6.0"
           imageName: "ubuntu-latest"
           SIM: "verilator"
 
@@ -132,7 +141,7 @@ jobs:
         displayName: "Install pytest-xdist"
 
       - script: |
-          conda install --yes pip && git clone -b v1.6.0 https://github.com/cocotb/cocotb.git && cd cocotb && cd .. && pip install -e cocotb
+          conda install --yes pip && git clone -b $(cocotb.version) https://github.com/cocotb/cocotb.git && cd cocotb && cd .. && pip install -e cocotb
         displayName: "Install cocotb from source"
 
       - script: |
